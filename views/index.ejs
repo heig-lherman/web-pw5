@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/style.css" rel="stylesheet" type="text/css" />
+    <script src="/script.js"></script>
+    <title>ChatsApp</title>
+</head>
+
+<body>
+    <div id="changeNameDialogContainer">
+        <dialog id="changeNameDialog">
+            <p>Change the name people will see for you on their conversation list !</p>
+            <form method="dialog">
+                <input type="text" name="displayName" id="newDisplayName" placeholder="Display Name" />
+                <button onclick="changeDisplayName()">Done !</button>
+                <button>Cancel</button>
+            </form>
+        </dialog>
+    </div>
+    <div id="container">
+        <div id="header">
+            <h1>ChatsApp</h1>
+            <span class="name">
+                <%= currentUser.displayName %>
+            </span>
+            <button id="changeNameButton" onclick="showChangeDisplayName()" class="logout">
+                Change Display Name
+            </button>
+            <button id="clearButton" onclick="location.href='/clear'" class="clear">
+                Reset
+            </button>
+            <button id="logoutButton" onclick="location.href='/logout'" class="logout">
+                Log Out
+            </button>
+        </div>
+        <div id="conversations-list">
+            <% conversations.forEach(async (conv) => {
+                let otherUser = conv.otherUser.displayName
+                let selected = conv.uid === mainConvUid
+                let displayName = otherUser.replace(/\s/g, "_");
+                %>
+                <div id="conversation<%= conv.uid %>" class="conversation <%= selected ? 'selected' : '' %>" onclick="openChat('<%= conv.uid %>')">
+                    <span class="name">
+                        <%= otherUser %>
+                    </span>
+                    <span class="last-message">
+                        <%= conv.lastMessage ? conv.lastMessage.content : "" %>
+                    </span>
+                </div>
+                <% }) %>
+        </div>
+        <div id="chat">
+            <div class="messages">
+                <% 
+                    mainConvMessages.forEach(function (msg) {
+                    %>
+                    <div class="message <%= msg.wasSentBy(currentUser) ? 'sent' : '' %>">
+                        <span>
+                            <%= msg.content %>
+                        </span>
+                    </div>
+                    <% }) %>
+            </div>
+            <% if (mainConvUid) { %>
+            <form class="messageForm" onsubmit="submitForm(event, '<%= mainConvUid %>')">
+                <textarea name="message" id="message" style="resize: vertical;" rows="1"></textarea>
+                <button id="messageButton" type="submit">Envoyer</button>
+            </form>
+            <% } %>
+        </div>
+    </div>
+    <script>
+        const timeoutDuration = 60000 * 10 // 10 minutes
+        try {
+            let nextTimeout = null
+            
+            // Log yourself out after long inactivity
+            let textArea = document.getElementById("message")
+            if (textArea) {
+                textArea.oninput = () => {
+                    nextTimeout = Date.now() + timeoutDuration
+                }
+            }
+            
+            if (!nextTimeout) {
+                console.log("Setting nextTimeout because it wasn't")
+                nextTimeout = Date.now() + timeoutDuration
+            }
+
+            setInterval(() => {
+                console.log("Checking inactivity")
+                console.log("nexttimeout is", nextTimeout)
+                let secondsLeft = parseInt((nextTimeout - Date.now()) / 1000)
+                if (secondsLeft > 0) {
+                    console.log(`${secondsLeft} seconds left before logging out.`)
+                } else {
+                    location.href='/logout'
+                }
+            }, 1000)
+
+        } catch (e) {
+            // Parse error, should never happen
+        }
+        
+    </script>
+</body>
+
+</html>

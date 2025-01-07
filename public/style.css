@@ -1,0 +1,188 @@
+:root {
+    --highlight-color: #ddd;
+    --my-color: #ffce62;
+    --other-color: #ddd;
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+#container {
+    max-width: 900px;
+    margin: auto;
+    padding: 0 30px;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 0fr 1fr;
+    gap: 20px;
+    height: 100vh;
+}
+
+#header {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    grid-column: 1 / 3;
+}
+
+#header .name {
+    flex-basis: 100%;
+}
+
+#header .logout {
+    display: inline-block;
+    white-space: nowrap;
+    text-decoration: none;
+    color: black;
+}
+
+.formContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formContainer form {
+    display: grid;
+    gap: 10px;
+}
+
+#loginForm {
+    padding: 30px;
+    box-shadow: #bbb 0px 0px 30px;;
+    border-radius: 5px;
+}
+
+#loginForm h1 {
+    margin: 0
+}
+
+#error {
+    display: flex;
+    align-items: center;
+}
+#error span {
+    color: red;
+    text-align: center;
+    flex-basis: 100%;
+}
+#error .button {
+    padding: 4px 8px;
+}
+
+#conversations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow: scroll;
+}
+
+.conversation {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: whitesmoke;
+    border-radius: 5px;
+    padding: 15px 20px;
+    cursor: pointer;
+}
+
+.conversation:hover,
+.conversation.selected {
+    background: var(--highlight-color)
+}
+
+.conversation .name {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.conversation .last-message {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    overflow: hidden;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    overflow: scroll;
+}
+
+.message {
+    padding: 8px 13px;
+    background: whitesmoke;
+    border-radius: 5px;
+    max-width: 80%;
+    overflow-wrap: break-word;
+}
+.message.sent {
+    align-self: flex-end;
+}
+
+.messageForm {
+    padding-block: 20px;
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+    gap: 20px;
+}
+
+form input[type="password"],
+form input[type="text"],
+form textarea,
+.button,
+button {
+    padding: 8px 15px;
+    padding-inline: 10px;
+    border: gray 1px solid;
+    border-radius: 5px;
+}
+.button,
+button {
+    background: whitesmoke;
+    cursor: pointer;
+    text-decoration: none;
+}
+.button:hover,
+button:hover {
+    background: var(--highlight-color)
+}
+
+.hidden {
+    display: none;
+}
+
+#changeNameDialog {
+    position: fixed;
+    margin: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+#changeNameDialog form {
+    display: flex;
+    gap: 10px;
+}
+#changeNameDialog form input {
+    flex-basis: 100%;
+}
+#changeNameDialog form button {
+    white-space: nowrap;
+}
